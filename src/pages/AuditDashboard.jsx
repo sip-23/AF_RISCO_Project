@@ -2,7 +2,7 @@
 import React from 'react';
 import { useNavigate } from 'react-router-dom';
 import Header from '../components/Header';
-import Footer from '../components/Footer';
+import ReportingFooter from '../components/ReportingFooter';
 
 const AuditDashboard = () => {
     const navigate = useNavigate();
@@ -104,7 +104,7 @@ const AuditDashboard = () => {
                 </div>
             </main>
             
-            <Footer />
+            <ReportingFooter />
         </div>
     );
 };

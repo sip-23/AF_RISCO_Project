@@ -1,6 +1,6 @@
 import React from 'react';
 import Header from '../components/Header';
-import Footer from '../components/Footer';
+import ReportingFooter from '../components/ReportingFooter';
 import Dashboard from '../components/Dashboard';
 
 const AuditReporting = () => {
@@ -21,7 +21,7 @@ const AuditReporting = () => {
                 <Dashboard />
             </main>
             
-            <Footer />
+            <ReportingFooter />
         </div>
     );
 };

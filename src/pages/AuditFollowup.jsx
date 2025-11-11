@@ -2,7 +2,7 @@
 import React from 'react';
 import { useNavigate } from 'react-router-dom';
 import Header from '../components/Header';
-import Footer from '../components/Footer';
+import ReportingFooter from '../components/ReportingFooter';
 
 const AuditFollowup = () => {
     const navigate = useNavigate();
@@ -31,7 +31,7 @@ const AuditFollowup = () => {
                 </div>
             </main>
             
-            <Footer />
+            <ReportingFooter />
         </div>
     );
 };
