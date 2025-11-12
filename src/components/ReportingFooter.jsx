@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import { useFilter } from '../context/FilterContext';
+import BAN from '../data/images';
 
 const ReportingFooter = () => {
     const { 
@@ -213,7 +214,7 @@ const ReportingFooter = () => {
 
             <img 
                 className="w-[220px] h-16 ml-auto" 
-                src="../src/assets/Khusela_banner.png" 
+                src= {BAN}
                 alt="Khusela-logo" 
             />
         </footer>

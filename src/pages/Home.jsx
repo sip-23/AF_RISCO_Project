@@ -2,6 +2,7 @@ import React from 'react';
 import Header from '../components/Header';
 import Footer from '../components/Footer';
 import { Link } from 'react-router-dom';
+import { LOGO, NAME } from '../data/images';
 
 const Home = () => {
     return (
@@ -15,12 +16,12 @@ const Home = () => {
                     </h2>
                     <img 
                         className="w-20 h-20 mx-auto mb-2" 
-                        src="../src/assets/Khusela_logo.png" 
+                        src = {LOGO}
                         alt="Khusela-logo" 
                     />
                     <img 
                         className="w-[220px] h-16 mx-auto mb-4" 
-                        src="../src/assets/Khusela.png" 
+                        src= {NAME} 
                         alt="Khusela-logo" 
                     />
                     <p className="text-lg text-gray-700 mb-8">
