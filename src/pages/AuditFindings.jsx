@@ -2,9 +2,11 @@ import React from 'react';
 import { useNavigate } from 'react-router-dom';
 import Header from '../components/Header';
 import ReportingFooter from '../components/ReportingFooter';
+import { useFilter } from '../context/FilterContext';
 
 const AuditFindings = () => {
     const navigate = useNavigate();
+    const { selectedPeriod, selectedPillar, selectedEntity } = useFilter();
 
     // Mock data for demonstration - in a real app, this would come from an API
     const findingsData = {

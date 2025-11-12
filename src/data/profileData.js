@@ -100,7 +100,7 @@ export const ProfileData = [
         date: "Jun 2025",
         businessObj: "Maintain operational efficiency and service delivery standards",
         StrategicInit: "Operational Excellence Program",
-        riskTitle: "Supply Chain Disruption",
+        riskTitle: "Services from Vendor Disruption",
         diskDescr: 'Vendor delivery failures impacting operations',
         owner: 'Operations Director',
         reportingPeriod: 'FY26 Q1',

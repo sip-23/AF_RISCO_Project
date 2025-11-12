@@ -1,9 +1,16 @@
 import React, { useState } from 'react';
+import { useFilter } from '../context/FilterContext';
 
 const ReportingFooter = () => {
-    const [selectedPeriod, setSelectedPeriod] = useState('');
-    const [selectedPillar, setSelectedPillar] = useState('');
-    const [selectedEntity, setSelectedEntity] = useState('');
+    const { 
+        selectedPeriod, 
+        setSelectedPeriod, 
+        selectedPillar, 
+        setSelectedPillar, 
+        selectedEntity, 
+        setSelectedEntity 
+    } = useFilter();
+    
     const [activeDropdown, setActiveDropdown] = useState(null);
 
     // Reporting Period options

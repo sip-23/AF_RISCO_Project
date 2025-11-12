@@ -1,7 +1,7 @@
 import React from 'react';
 import { useNavigate } from 'react-router-dom';
 import Header from '../components/Header';
-import Footer from '../components/Footer';
+import ReportingFooter from '../components/ReportingFooter';
 
 const RiskCategoryAnalysis = () => {
     const navigate = useNavigate();
@@ -25,7 +25,7 @@ const RiskCategoryAnalysis = () => {
                     <p className="text-gray-600">Detailed risk category analysis content coming soon...</p>
                 </div>
             </main>
-            <Footer />
+            <ReportingFooter />
         </div>
     );
 };

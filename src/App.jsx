@@ -1,5 +1,6 @@
 import React from 'react';
 import { BrowserRouter as Router, Routes, Route, Navigate } from 'react-router-dom';
+import { FilterProvider } from './context/FilterContext';
 import Home from './pages/Home';
 import RiskContents from './pages/RiskContents';
 import AuditContents from './pages/AuditContents';
@@ -22,7 +23,8 @@ import ManagementActions from './pages/ManagementActions';
 
 function App() {
     return (
-        <Router>
+        <FilterProvider>
+            <Router>
             <div className="App font-plus-jakarta">
                 <Routes>
                     <Route path="/" element={<Home />} />
@@ -55,6 +57,8 @@ function App() {
                 </Routes>
             </div>
         </Router>
+        </FilterProvider>
+        
     );
 }
 

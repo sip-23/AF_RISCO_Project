@@ -54,6 +54,59 @@ const RiskDetail = () => {
         }
     };
 
+    // New functions for the enhanced risk appetite table
+    const getExpressionColor = (expression) => {
+        switch (expression) {
+            case 'Seek': return 'bg-blue-100 text-blue-800';
+            case 'Remain Within': return 'bg-green-100 text-green-800';
+            case 'Avoid': return 'bg-red-100 text-red-800';
+            default: return 'bg-gray-100 text-gray-800';
+        }
+    };
+
+    const getStatusColor = (status) => {
+        switch (status) {
+            case 'above': return 'bg-green-100 text-green-800 border-green-300';
+            case 'within': return 'bg-yellow-100 text-yellow-800 border-yellow-300';
+            case 'below': return 'bg-red-100 text-red-800 border-red-300';
+            default: return 'bg-gray-100 text-gray-800 border-gray-300';
+        }
+    };
+
+    const getStatusIcon = (status) => {
+        switch (status) {
+            case 'above': return '🟢';
+            case 'within': return '🟡';
+            case 'below': return '🔴';
+            default: return '⚪';
+        }
+    };
+
+    // Transform risk appetite data to match the desired format
+    const transformRiskAppetiteData = () => {
+        return Object.entries(risk.RiskAppetite).map(([key, measure], index) => ({
+            id: index + 1,
+            category: risk.Pillar || 'General',
+            riskAppetiteMeasure: measure.explaination || 'Risk Appetite Measure',
+            expressionOfRisk: measure.expressionRisk || 'Remain Within',
+            r: measure.rag === 'R' ? 'Threshold' : '-',
+            a: measure.rag === 'A' ? 'Acceptable Range' : '-',
+            g: measure.rag === 'G' ? 'Target' : '-',
+            currentValue: 'N/A', // You can add actual current values if available
+            status: getStatusFromRAG(measure.rag)
+        }));
+    };
+
+    const getStatusFromRAG = (rag) => {
+        switch (rag) {
+            case 'R': return 'below';
+            case 'A': return 'within';
+            case 'G': return 'above';
+            default: return 'neutral';
+        }
+    };
+
+    const riskAppetiteData = transformRiskAppetiteData();
     const riskLevel = getRiskLevel(risk.RiskAssessment.Likelyhood, risk.RiskAssessment.grossExposure);
     const riskColor = getRiskLevelColor(riskLevel);
 
@@ -171,36 +224,99 @@ const RiskDetail = () => {
                         </div>
                     </div>
 
-                    {/* Risk Appetite Table */}
-                    <div className="bg-white rounded-lg shadow-lg p-6 mb-6">
-                        <h3 className="text-xl font-bold text-[#124E57] mb-4">Risk Appetite</h3>
+                    {/* Enhanced Risk Appetite Table */}
+                    <div className="bg-white rounded-lg border border-gray-200 shadow-sm overflow-hidden mb-6">
+                        <div className="p-4 border-b border-gray-200">
+                            <h3 className="text-xl font-bold text-[#124E57]">
+                                Risk Appetite Measures
+                            </h3>
+                        </div>
                         <div className="overflow-x-auto">
                             <table className="w-full border-collapse">
                                 <thead>
-                                    <tr className="bg-[#124E57]">
-                                        {/* <th className="p-3 text-left font-semibold text-white border-b">Measure</th> */}
-                                        <th className="p-3 text-left font-semibold text-white border-b">Expression</th>
-                                        <th className="p-3 text-left font-semibold text-white border-b">Type</th>
-                                        <th className="p-3 text-left font-semibold text-white border-b">Explanation</th>
-                                        <th className="p-3 text-left font-semibold text-white border-b">RAG</th>
+                                    <tr className="bg-[#124E57] text-white">
+                                        <th className="p-3 text-left font-semibold">Category</th>
+                                        <th className="p-3 text-left font-semibold">Risk Appetite Measure</th>
+                                        <th className="p-3 text-left font-semibold">Expression of Risk</th>
+                                        <th className="p-3 text-center font-semibold bg-red-200 text-red-800">R</th>
+                                        <th className="p-3 text-center font-semibold bg-yellow-200 text-yellow-800">A</th>
+                                        <th className="p-3 text-center font-semibold bg-green-200 text-green-800">G</th>
+                                        <th className="p-3 text-center font-semibold">Current Value</th>
+                                        <th className="p-3 text-center font-semibold">Status</th>
                                     </tr>
                                 </thead>
                                 <tbody>
-                                    {Object.entries(risk.RiskAppetite).map(([key, measure]) => (
-                                        <tr key={key} className="border-b">
-                                            {/* <td className="p-3 font-medium text-gray-700">Measure {measure.raid}</td> */}
-                                            <td className="p-3 text-gray-600">{measure.expressionRisk}</td>
-                                            <td className="p-3 text-gray-600">{measure.type}</td>
-                                            <td className="p-3 text-gray-600">{measure.explaination}</td>
+                                    {riskAppetiteData.map((item) => (
+                                        <tr key={item.id} className="border-b hover:bg-gray-50">
+                                            <td className="p-3 font-medium text-gray-900">
+                                                {item.category}
+                                            </td>
+                                            <td className="p-3 text-gray-700 max-w-xs">
+                                                <div className="truncate" title={item.riskAppetiteMeasure}>
+                                                    {item.riskAppetiteMeasure}
+                                                </div>
+                                            </td>
                                             <td className="p-3">
-                                                <span className={`px-2 py-1 rounded-full text-xs font-semibold border ${getRAGColor(measure.rag)}`}>
-                                                    {measure.rag}
+                                                <span className={`px-2 py-1 rounded-full text-xs font-semibold ${getExpressionColor(item.expressionOfRisk)}`}>
+                                                    {item.expressionOfRisk}
+                                                </span>
+                                            </td>
+                                            <td className="p-3 text-center text-gray-700 font-mono bg-red-50">
+                                                {item.r}
+                                            </td>
+                                            <td className="p-3 text-center text-gray-700 font-mono bg-yellow-50">
+                                                {item.a}
+                                            </td>
+                                            <td className="p-3 text-center text-gray-700 font-mono bg-green-50">
+                                                {item.g}
+                                            </td>
+                                            <td className="p-3 text-center font-semibold text-gray-900">
+                                                {item.currentValue}
+                                            </td>
+                                            <td className="p-3 text-center">
+                                                <span className={`px-3 py-1 rounded-full text-sm font-semibold border ${getStatusColor(item.status)}`}>
+                                                    {getStatusIcon(item.status)} {item.status?.toUpperCase() || 'N/A'}
                                                 </span>
                                             </td>
                                         </tr>
                                     ))}
                                 </tbody>
                             </table>
+                        </div>
+                    </div>
+
+                    {/* Legend for Risk Appetite Table */}
+                    <div className="bg-white p-4 rounded-lg border border-gray-200 shadow-sm mb-6">
+                        <h4 className="font-semibold text-gray-700 mb-3">Risk Appetite Legend</h4>
+                        <div className="grid grid-cols-1 md:grid-cols-4 gap-4">
+                            <div className="flex items-center space-x-2">
+                                <span className="text-2xl">🟢</span>
+                                <div>
+                                    <div className="font-medium text-green-800">Above Target</div>
+                                    <div className="text-sm text-gray-600">Performance exceeds appetite range</div>
+                                </div>
+                            </div>
+                            <div className="flex items-center space-x-2">
+                                <span className="text-2xl">🟡</span>
+                                <div>
+                                    <div className="font-medium text-yellow-800">Within Appetite</div>
+                                    <div className="text-sm text-gray-600">Within acceptable risk appetite range</div>
+                                </div>
+                            </div>
+                            <div className="flex items-center space-x-2">
+                                <span className="text-2xl">🔴</span>
+                                <div>
+                                    <div className="font-medium text-red-800">Below Target</div>
+                                    <div className="text-sm text-gray-600">Below minimum appetite threshold</div>
+                                </div>
+                            </div>
+                            <div className="flex items-center space-x-2">
+                                <span className="text-2xl">⚪</span>
+                                <div>
+                                    <div className="font-medium text-gray-800">No Data</div>
+                                    <div className="text-sm text-gray-600">Data not available for period</div>
+                                </div>
+                            </div>
                         </div>
                     </div>
 
@@ -211,7 +327,6 @@ const RiskDetail = () => {
                             <table className="w-full border-collapse">
                                 <thead>
                                     <tr className="bg-[#124E57]">
-                                        {/* <th className="p-3 text-left font-semibold text-white border-b">Signal ID</th> */}
                                         <th className="p-3 text-left font-semibold text-white border-b">Key Risk Indicator</th>
                                         <th className="p-3 text-left font-semibold text-white border-b">RAG</th>
                                         <th className="p-3 text-left font-semibold text-white border-b">Comments</th>
@@ -221,7 +336,6 @@ const RiskDetail = () => {
                                 <tbody>
                                     {Object.entries(risk.earlyWaringSignals).map(([key, signal]) => (
                                         <tr key={key} className="border-b">
-                                            {/* <td className="p-3 font-medium text-gray-700">{signal.ewsid}</td> */}
                                             <td className="p-3 text-gray-600">{signal.keyRiskIndicator}</td>
                                             <td className="p-3">
                                                 <span className={`px-2 py-1 rounded-full text-xs font-semibold border ${getRAGColor(signal.rag)}`}>
@@ -262,7 +376,6 @@ const RiskDetail = () => {
                             <table className="w-full border-collapse">
                                 <thead>
                                     <tr className="bg-[#124E57]">
-                                        {/* <th className="p-3 text-left font-semibold text-white border-b">Activity</th> */}
                                         <th className="p-3 text-left font-semibold text-white border-b">Description</th>
                                         <th className="p-3 text-left font-semibold text-white border-b">Nature of Control</th>
                                         <th className="p-3 text-left font-semibold text-white border-b">Control Owner</th>
@@ -274,7 +387,6 @@ const RiskDetail = () => {
                                 <tbody>
                                     {Object.entries(risk.keyRiskResponseActivity.ControlActivity).map(([key, activity]) => (
                                         <tr key={key} className="border-b">
-                                            {/* <td className="p-3 font-medium text-gray-700">Activity {activity.cid}</td> */}
                                             <td className="p-3 text-gray-600">{activity.descripControlActivity}</td>
                                             <td className="p-3 text-gray-600">{activity.natureofControl}</td>
                                             <td className="p-3 text-gray-600">{activity.ControlOwner}</td>

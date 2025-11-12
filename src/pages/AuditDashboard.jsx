@@ -1,18 +1,43 @@
-// src/pages/AuditDashboard.js
 import React from 'react';
 import { useNavigate } from 'react-router-dom';
+import { useFilter } from '../context/FilterContext';
 import Header from '../components/Header';
 import ReportingFooter from '../components/ReportingFooter';
 
 const AuditDashboard = () => {
     const navigate = useNavigate();
+    const { selectedPeriod, selectedPillar, selectedEntity } = useFilter();
 
-    const auditStats = [
-        { title: 'Total Audits', value: '24', color: 'bg-blue-500' },
-        { title: 'In Progress', value: '8', color: 'bg-yellow-500' },
-        { title: 'Completed', value: '12', color: 'bg-green-500' },
-        { title: 'High Risk Findings', value: '5', color: 'bg-red-500' }
-    ];
+    // Filter-aware audit stats
+    const getFilteredAuditStats = () => {
+        // In a real app, you would fetch data based on filters
+        // For now, we'll use mock data that could change based on filters
+        const baseStats = [
+            { title: 'Total Audits', value: '24', color: 'bg-blue-500' },
+            { title: 'In Progress', value: '8', color: 'bg-yellow-500' },
+            { title: 'Completed', value: '12', color: 'bg-green-500' },
+            { title: 'High Risk Findings', value: '5', color: 'bg-red-500' }
+        ];
+
+        // Example of how filters could affect the data
+        if (selectedPeriod === 'fy24q4') {
+            baseStats[0].value = '18';
+            baseStats[1].value = '6';
+            baseStats[2].value = '10';
+            baseStats[3].value = '4';
+        }
+
+        if (selectedPillar === 'investments') {
+            baseStats[0].value = '8';
+            baseStats[1].value = '3';
+            baseStats[2].value = '4';
+            baseStats[3].value = '2';
+        }
+
+        return baseStats;
+    };
+
+    const auditStats = getFilteredAuditStats();
 
     const recentActivities = [
         { id: 1, activity: 'IT Infrastructure Audit', status: 'Completed', date: '2024-01-15' },
@@ -36,6 +61,30 @@ const AuditDashboard = () => {
                         </svg>
                         <span>Back to Audit Contents</span>
                     </button>
+
+                    {/* Filter Status Display */}
+                    {(selectedPeriod || selectedPillar || selectedEntity) && (
+                        <div className="bg-blue-50 p-4 rounded-lg border border-blue-200 mb-6">
+                            <h3 className="text-lg font-semibold text-blue-800 mb-2">Active Filters</h3>
+                            <div className="flex flex-wrap gap-2">
+                                {selectedPeriod && (
+                                    <span className="px-3 py-1 bg-blue-100 text-blue-800 rounded-full text-sm">
+                                        Period: {selectedPeriod}
+                                    </span>
+                                )}
+                                {selectedPillar && (
+                                    <span className="px-3 py-1 bg-green-100 text-green-800 rounded-full text-sm">
+                                        Pillar: {selectedPillar}
+                                    </span>
+                                )}
+                                {selectedEntity && (
+                                    <span className="px-3 py-1 bg-purple-100 text-purple-800 rounded-full text-sm">
+                                        Entity: {selectedEntity}
+                                    </span>
+                                )}
+                            </div>
+                        </div>
+                    )}
 
                     {/* Stats Overview */}
                     <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mb-8">
