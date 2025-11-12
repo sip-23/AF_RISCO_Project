@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { useFilter } from '../context/FilterContext';
-import BAN from '../data/images';
+import { BAN } from '../data/images';
 
 const ReportingFooter = () => {
     const { 

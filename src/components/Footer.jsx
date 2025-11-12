@@ -1,5 +1,5 @@
 import React from 'react';
-import BAN from '../data/images';
+import { BAN } from '../data/images';
 
 const Footer = () => {
     return (
