@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import Header from '../components/Header';
 import ReportingFooter from '../components/ReportingFooter';
-import { ProfileData } from '../data/ProfileData';
+import { ProfileData } from '../data/profileData';
 
 const RiskProfile = () => {
     const [filteredData, setFilteredData] = useState(ProfileData);
